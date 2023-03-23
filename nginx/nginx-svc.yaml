@@ -1,22 +1,12 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: v1
+kind: Service
 metadata:
-  name: guestbook
-  namespace: argocd
+  name: nginx-svc
   labels:
-    name: guestbook
+    app: nginx
 spec:
-  project: default
-  source:
-    repoURL: https://github.com/zaw-zaw/argocd.git
-    path: guestbook
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: guestbook
-  syncPolicy:
-    automated: 
-      prune: true 
-      selfHeal: true
-      allowEmpty: false 
-    syncOptions:   
-    - CreateNamespace=true  
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: nginx
